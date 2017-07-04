@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>TinyApp</title>
+</head>
+<body>
+    <header> 
+        <% include partials/_header %>
+    </header>
+    <h1>These are the urls!</h1>
+    <p> Hi there! Bone Saw is ready!</p>
+    <h2>Here are my links!</h2>
+    <ul> 
+        <% for (url in urls) { %>
+        <li> <%= url %> - <%= urls[url] %></li>
+        <% } %>
+    </ul>
+    <p><a href="#">Create a new shortened URL</a></p>
+</body>
+</html>
