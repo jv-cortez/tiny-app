@@ -11,10 +11,13 @@
     <p> Hi there! Welcome to my TinyApp!</p>
     <h2>Here are my links!</h2>
     <ul> 
-        <% for (url in urls) { %>
-        <li> <%= url %> - <%= urls[url] %></li>
+        <% for (let url in urls) { %>
+        <li>
+             <%= url %> - <%= urls[url] %>
+             <a href="/urls/<%= url %>">EDIT</a>
+        </li>
         <% } %>
     </ul>
-    <p><a href="#">Create a new shortened URL</a></p>
+    <p><a href="/urls/new">Create a new shortened URL</a></p>
 </body>
 </html>
