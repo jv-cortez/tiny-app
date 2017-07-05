@@ -57,6 +57,10 @@ app.get("/urls/:id", (req, res) => {
   });
 });
 
+// app.post("/urls/:id", (req, res) => {
+
+// }
+
 app.post('/urls/:id/delete', (req, res) => {
   const shortURL = req.params.id;
   console.log(urlDatabase[shortURL]);
