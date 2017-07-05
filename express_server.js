@@ -42,14 +42,30 @@ app.post("/urls", (req, res) => {
 
 app.get("/u/:shortURL", (req, res) => {
   let longURL = urlDatabase[req.params.shortURL]
-  //todo:if long URL is undefined, show 404 instead of redirecting
-  res.redirect(longURL);
+  if (longURL === undefined) {
+    res.status(404).send('No existing URL');
+  } else {
+    delete longURL[req.params.id];
+    res.redirect(longURL);
+  }
+
 });
 
 app.get("/urls/:id", (req, res) => {
   res.render("urls_show", {
     shortURL: req.params.id, longURL: urlDatabase[req.params.id]
   });
+});
+
+app.post('/urls/:id/delete', (req, res) => {
+  const shortURL = req.params.id;
+  console.log(urlDatabase[shortURL]);
+  if (urlDatabase[shortURL] === undefined) {
+    res.status(404).send('No existing URL');
+  } else {
+    delete urlDatabase[shortURL];
+    res.redirect('/urls');
+  }
 });
 
 app.listen(PORT, () => {

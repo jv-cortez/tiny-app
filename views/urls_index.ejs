@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>TinyApp</title>
+    <title>TinyApp</title>
 </head>
+
 <body>
-    <header> 
+    <header>
         <% include partials/_header %>
     </header>
     <h1>These are the urls!</h1>
     <p> Hi there! Welcome to my TinyApp!</p>
     <h2>Here are my links!</h2>
-    <ul> 
+    <ul>
         <% for (let url in urls) { %>
-        <li>
-             <%= url %> - <%= urls[url] %>
-             <a href="/urls/<%= url %>">EDIT</a>
-        </li>
-        <% } %>
+            <li>
+                <%= url %> - <%= urls[url] %>
+                        <a href="/urls/<%= url %>">EDIT</a>
+                        <form method="POST" action="/urls/<%= url %>/delete"><input type="submit" value="Delete"></form>
+                        
+            </li>
+            <% } %>
     </ul>
     <p><a href="/urls/new">Create a new shortened URL</a></p>
+
 </body>
+
 </html>
