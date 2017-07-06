@@ -1,12 +1,23 @@
-var express = require("express");
-var app = express();
-var PORT = process.env.PORT || 8080; // default port 8080
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 8080;
+
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-var urlDatabase = {
+
+app.use((req, res, next) => {
+  res.locals = {
+    username: req.cookies["name"]
+  }
+  next();
+});
+
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
@@ -45,10 +56,8 @@ app.get("/u/:shortURL", (req, res) => {
   if (longURL === undefined) {
     res.status(404).send('No existing URL');
   } else {
-    delete longURL[req.params.id];
     res.redirect(longURL);
   }
-
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -57,9 +66,20 @@ app.get("/urls/:id", (req, res) => {
   });
 });
 
-// app.post("/urls/:id", (req, res) => {
+app.post("/login", (req, res) => {
+  let loginName = req.body.username
+  if (loginName !== undefined) {
+    res.cookie("name", loginName)
+    res.redirect("/urls")
+  } else {
+    res.status(404).send("Please login")
+  }
+});
 
-// }
+app.post("/logout", (req, res) => {
+  res.clearCookie("name")
+  res.redirect("/urls")
+})
 
 app.post('/urls/:id/delete', (req, res) => {
   const shortURL = req.params.id;
