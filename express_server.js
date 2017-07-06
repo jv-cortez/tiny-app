@@ -103,40 +103,35 @@ function findUser(email) {
   app.post("/register", (req, res) => {
     const { email, password } = req.body;
     const user = findUser(email)
-    console.log(user)
     if (user) {
-      res.status(400).send("Invalid email or email exists")
+      res.status(400).send("Invalid email or email exists. Please login instead")
     } else {
       const user_id = generateRandomIdNumber();
       users[user_id] = { email, password };
       const newRandomId = users[user_id];
-      console.log(newRandomId)
       res.cookie("user_id", newRandomId);
       res.redirect("/urls")
     }
   });
-  // if (!newRandomId) {
-  //   res.redirect("/register");
-  // } else {
-  //   return res.redirect("/urls");
 
-  // }
   app.get("/login", (req, res) => {
    res.render("urls_login")
   })
 
   app.post("/login", (req, res) => {
-    let loginName = req.body.user_id;
-    if (loginName !== undefined) {
-      // const randomID = ........... // res.cookie("name", loginName)
+    let loginName = req.body.email;
+    const user = findUser(loginName)
+    if (user !== undefined) {    
+      const randomID =  res.cookie("user_id", loginName)
       res.redirect("/urls")
     } else {
-      res.status(404).send("Please login")
+      res.status(403).send("Please login")
+      res.redirect('/')
     }
   });
 
   app.post("/logout", (req, res) => {
-    res.clearCookie("name")
+    res.clearCookie("user_id")
     res.redirect("/urls")
   })
 
