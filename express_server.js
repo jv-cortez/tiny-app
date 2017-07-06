@@ -23,11 +23,11 @@ const urlDatabase = {
 };
 
 const users = {
-  userRandomID: {
+  userRandomID1: {
     email: "juanvictor.cortez@gmail.com",
     password: "asdf",
   },
-  userRandomID: {
+  userRandomID2: {
     email: "juanvictorcortez@yahoo.ca",
     password: "qwer"
   }
@@ -53,9 +53,14 @@ function generateRandomIdNumber() {
   return text;
 }
 
-function findUser(username, code) {
-  return users.find((user) => user.username == username && user.code == code);
-}
+function findUser(email) {
+  for (let uid in users) {
+    if (email == users[uid].email) {
+      return true
+    }
+  }
+  return false
+} //edit to search for an existing email
 
 app.get("/", (req, res) => {
   res.redirect("/urls");
@@ -98,29 +103,32 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    res.status(404).redirect("/register");
+  const user = findUser(email)
+  console.log(user)
+  if (user) {
+    res.status(400).send("Invalid email or email exists")
+    // console.log(searchUserEmail)
   } else {
     const newId = generateRandomIdNumber();
     users[newId] = { email, password };
     const newRandomId = users[newId];
     res.cookie("newId", newRandomId);
     res.redirect("/urls")
-    console.log(users)
+    // console.log(users)
   }
-  // if (!newRandomId) {
-  //   res.redirect("/register");
-  // } else {
-  //   return res.redirect("/urls");
+});
+// if (!newRandomId) {
+//   res.redirect("/register");
+// } else {
+//   return res.redirect("/urls");
 
-  // }
-})
+// }
 
 app.post("/login", (req, res) => {
   let loginName = req.body.username
   if (loginName !== undefined) {
     // const randomID = ........... // res.cookie("name", loginName)
-      res.redirect("/urls")
+    res.redirect("/urls")
   } else {
     res.status(404).send("Please login")
   }
