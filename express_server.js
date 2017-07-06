@@ -13,8 +13,8 @@ app.set("view engine", "ejs");
 app.use((req, res, next) => {
   res.locals = {
     username: req.cookies["name"]
- }
- next();
+  }
+  next();
 });
 
 const urlDatabase = {
