@@ -9,21 +9,25 @@
     <header>
         <% include partials/_header %>
     </header>
-    <h1>These are the urls!</h1>
-    <p> Hi there! Welcome to my TinyApp!</p>
-    <h2>Here are my links!</h2>
+    <h1>Hi there! Welcome to my TinyApp!</h1>
+    <h2> These are the URLs!</h2>
+    <p>Here are your links!<p>
     <ul>
         <% for (let url in urls) { %>
-            <li>
-                <%= url %> - <%= urls[url] %>
+            <p>
+                <%= url %> - <%= urls[url].longURL %>
                         <a href="/urls/<%= url %>">EDIT</a>
                         <form method="POST" action="/urls/<%= url %>/delete"><input type="submit" value="Delete"></form>
 
-            </li>
+            </p>
             <% } %>
+    <p>Create a new shortened URL</p><form method="POST" action="/urls"><input type="submit" value="Enter"></form>
+        <form action="/logout" method="POST" style="margin: 25px">
+            <label class="logoutLblPos">
+            <input name="logoutbutton" type="submit" id="submit2" value="log out">
+            </label>
+        </form>
     </ul>
-    <p><a href="/urls/new">Create a new shortened URL</a></p>
-
 </body>
 
 </html>

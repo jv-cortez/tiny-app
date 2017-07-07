@@ -5,26 +5,22 @@
             <a class="navbar-brand">
                 <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
                 By LHL June 26 '17 Cohort - JV Cortez
-                <% if (username !== undefined) { %>
-                <form action="/logout" method="POST" style="margin: 25px">
-                    <label class="logoutLblPos">
-                    <input name="logoutbutton" type="submit" id="submit2" value="log out">
+                 <!--<% if (user_id !== undefined) { %>-->
+            <!--<form action="/logout" method="POST" style="margin: 25px">
+                <label class="logoutLblPos">
+                <input name="logoutbutton" type="submit" id="submit2" value="log out">
                 </label>
-                </form>
+            </form>
                 <% } else { %>
-                <form action="/login" method="POST" style="margin:25px;">
-                    <label="username">Enter Username Here</label>
-                    <input id="username" type="text" name="username" placeholder="Type Username Here" style="width: 300px;">
-                    <input type="submit" value="Enter">
+                <form action="/login" method="GET" style="margin:10px;">
+                <input type="submit" value="Login Here">
                 </form>
-                <% } %>  
+                <form action="/register" method="GET" style="margin:10px;">
+                <input type="submit" value="Register Here">
+                </form>
+                <% } %>-->
+                <p><a href="/">Home</a></p>
             </a>
         </div>
-
-        <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/register">Register Here</a></li>
-        </ul>
-
     </div>
 </nav>
