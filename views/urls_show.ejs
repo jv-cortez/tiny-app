@@ -2,25 +2,25 @@
 <html lang="en">
 
 <head>
-    <title>TinyApp</title>
+    <title>Tiny App Shrink URL</title>
 </head>
 
 <body>
     <header>
         <% include partials/_header %>
     </header>
+    <center>
     <h1>Here is your new URL!</h1>
     <p> Hi there!</p>
-    <p> ShortURL:
-        <%= shortURL %>
-    </p>
-    <p> LongURL:
-        <%= longURL.longURL %>
-    </p>
-    <form action="/urls" method="POST" style="margin:150px;">
-        <label for="longURL">Update your information:</label>
-        <input id="longURL" type="text" name="longURL" placeholder="Update here: http://" style="width: 300px">
+    <p>Here is your generated shortURL:
+        <a href="/u/<%= shortURL %>"><%= shortURL %></a></p>
+    <p>Here is your entered web address:
+        <a href="<%= longURL.longURL %>"><%= longURL.longURL %></a></p>
+    <form action="/urls" method="POST" style="margin:25px;">
+        <label for="longURL">Update link here:</label>
+        <input id="longURL" type="text" name="longURL" placeholder="Please include http://" style="width: 250px">
         <input type="submit" value="Submit">
+        </center>
 </body>
 
 </html>

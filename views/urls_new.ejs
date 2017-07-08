@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>Welcome to Tiny App</head>
+<head>
+  <title>Tiny App New Url</title>
+</head>
 
 <body style="font-size:20px; padding:50px;">
   <% include partials/_header %>
-    <form action="/urls" method="POST" style="margin:150px;">
+  <center>
+  <h1>Welcome to Tiny App</h1>
+  <h4>I can feel a change coming...</h4>
+    <form action="/urls" method="POST" style="margin:25px;">
       <label for="longURL">Enter a URL:</label>
       <input id="longURL" type="text" name="longURL" placeholder="Please include http://" style="width: 300px">
       <input type="submit" value="Submit">
     </form>
+  </center>
 </body>
 
 </html>
