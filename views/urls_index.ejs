@@ -11,13 +11,15 @@
     </header>
     <center>
         <h1>Hi there! Welcome to my TinyApp!</h1>
+        <% if (user_id) { %> 
         <h2> These are the URLs!</h2>
-                <ul>
+                        <ul>
                     <% for (let url in urls) { %>
                         <p>
                             <%= url %> - <%= urls[url].longURL %>
                                     <a href="/urls/<%= url %>">EDIT</a>
-                                    <form method="POST" action="/urls/<%= url %>/delete"><input type="submit" value="Delete"></form>
+                                    <form method="POST" action="/urls/<%= url %>/delete">
+                                    <input type="submit" value="Delete"></form>
                         </p>
                         <% } %>
                             <p>Shrink URL here!</p>
@@ -28,6 +30,11 @@
             <input name="logoutbutton" type="submit" id="submit2" value="log out"></label>
                             </form>
                 </ul>
+        <% } else { %> 
+        <p> Please <a href="/login">log in</a></p>
+        <% } %>
+        
+
     </center>
 </body>
 
