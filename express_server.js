@@ -1,41 +1,32 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
-
-// const cookieParser = require('cookie-parser')
-// app.use(cookieParser())
-
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
-  secret: 'pinkunicorns',
+  name: 'session',
+  secret: 'development',
   maxAge: 24 * 60 * 60 * 1000
 }));
 
-
 app.use((req, res, next) => {
   res.locals = {
-    user_id: req.cookies["user_id"]
+    user_id: req.session.userId
   }
   next();
 });
 
 const bcrypt = require('bcrypt');
 const salt = 10;
-// need to add hash to encrypt password
-// console.log("here are the pw", password, hashed_password, compareSync(password, hashed_password))
 
 const urlDatabase = {
   "shortURL": {
     "creator": "user_id",
     "longURL": "http://www.lighthouselabs.ca",
   }
-}
-//urlsDatabase[id - form the cooke].url should 
-// must be dynamic user_id: {
+};
 
 const users = {
   userRandomID1: {
@@ -48,7 +39,7 @@ const users = {
     email: "juanvictorcortez@yahoo.ca",
     password: "qwer"
   }
-}
+};
 
 function generateRandomString() {
   var text = "";
@@ -77,7 +68,7 @@ function findUser(email) {
     }
   }
   return undefined
-}
+};
 
 function findUserPassword(password) {
   for (let uid in users) {
@@ -86,7 +77,7 @@ function findUserPassword(password) {
     }
   }
   return undefined
-}
+};
 
 function findUserID(id) {
   let filteredUrls = {};
@@ -100,7 +91,7 @@ function findUserID(id) {
 }
 
 app.get("/", (req, res) => {
-  if (req.cookies["user_id"] === undefined) {
+  if (req.session.userId === undefined) {
     res.redirect("login")
   } else {
     res.render("urls_index", { urls: urlDatabase });
@@ -108,10 +99,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  if (req.cookies["user_id"] === undefined) {
+  if (req.session.userId === undefined) {
     res.redirect("/login")
   } else {
     res.render("urls_index", { urls: urlDatabase });
+    alert("Sneaky, you didn't log in. Please do.")
   }
 });
 
@@ -119,13 +111,13 @@ app.post("/urls", (req, res) => {
   const newString = generateRandomString()
   urlDatabase[newString] = {
     "longURL": req.body.longURL,
-    "creator": req.cookies["user_id"]
+    "creator": req.session.userId
   };
   res.redirect("/urls/" + newString);
 });
 
 app.get("/urls/new", (req, res) => {
-  if (req.cookies["user_id"] === undefined) {
+  if (req.session.userId === undefined) {
     res.redirect("/login")
   } else {
     res.render("urls_new")
@@ -143,7 +135,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 app.get("/urls/:id", (req, res) => {
   res.render("urls_show", {
-    shortURL: req.params.id, longURL: urlDatabase[req.params.id], user: users[req.cookies["user_id"]]
+    shortURL: req.params.id, longURL: urlDatabase[req.params.id], user: users[req.session.userId]
   });
 });
 
@@ -166,8 +158,8 @@ app.post("/register", (req, res) => {
       }
       const user_id = generateRandomIdNumber();
       users[user_id] = { id: user_id, email, password: hash };
-      res.cookie("user_id", password);
-      res.redirect("/login")
+      req.session.userId = password;
+      res.redirect("/urls")
     })
   }
 });
@@ -178,37 +170,35 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body
-  const user = findUser(email)
+  const user = findUser(email);
   bcrypt.compare(password, user.password, function (err, matched) {
     if (matched) {
-      console.log("compare", matched)
-      res.cookie("user_id", user.id);
+      req.session.userId = user.id;
       res.locals.user_id = user.id;
-      res.render("urls_index", { urls: urlDatabase });  
-  } else {
+      res.render("urls_index", { urls: urlDatabase });
+    } else {
       res.status(403).send("Email not found. Please register. You won't regret it!");
     }
   })
 })
 
-  app.post("/logout", (req, res) => {
-    res.clearCookie("user_id")
-    res.redirect("login")
-  })
+app.post("/logout", (req, res) => {
+  req.session = null;
+  res.redirect("login")
+})
 
-  app.post('/urls/:id/delete', (req, res) => {
-    const shortURL = req.params.id;
-    console.log(shortURL)
-    if (urlDatabase[shortURL] === undefined) {
-      res.status(404).send('No existing URL');
-    } else if (urlDatabase[req.params.id].creator === req.cookies["user_id"]) {
-      delete urlDatabase[req.params.id];
-      res.redirect("/");
-    } else {
-      res.send("Invalid user")
-    }
-  });
+app.post('/urls/:id/delete', (req, res) => {
+  const shortURL = req.params.id;
+  if (urlDatabase[shortURL] === undefined) {
+    res.status(404).send('No existing URL');
+  } else if (urlDatabase[req.params.id].creator === req.session.userId) {
+    delete urlDatabase[req.params.id];
+    res.redirect("/");
+  } else {
+    res.send("Invalid user")
+  }
+});
 
-  app.listen(PORT, () => {
-    console.log(`What time is it? It's ${PORT} time!`);
-  });
+app.listen(PORT, () => {
+  console.log(`What time is it? It's ${PORT} time!`);
+});
