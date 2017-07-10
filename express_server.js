@@ -22,7 +22,7 @@ const bcrypt = require('bcrypt');
 const salt = 10;
 
 const urlDatabase = {
-  "shortURL": {
+  "5gwPxY": {
     "creator": "user_id",
     "longURL": "http://www.lighthouselabs.ca",
   }
@@ -49,7 +49,7 @@ function generateRandomString() {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
 
   return text;
-}
+};
 
 function generateRandomIdNumber() {
   var text = "";
@@ -59,7 +59,7 @@ function generateRandomIdNumber() {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
 
   return text;
-}
+};
 
 function findUser(email) {
   for (let uid in users) {
@@ -88,7 +88,7 @@ function findUserID(id) {
     }
   }
   return filteredUrls;
-}
+};
 
 app.get("/", (req, res) => {
   if (req.session.userId === undefined) {
@@ -103,7 +103,6 @@ app.get("/urls", (req, res) => {
     res.redirect("/login")
   } else {
     res.render("urls_index", { urls: urlDatabase });
-    alert("Sneaky, you didn't log in. Please do.")
   }
 });
 
@@ -166,7 +165,7 @@ app.post("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.render("urls_login")
-})
+});
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body
@@ -180,12 +179,12 @@ app.post("/login", (req, res) => {
       res.status(403).send("Email not found. Please register. You won't regret it!");
     }
   })
-})
+});
 
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("login")
-})
+});
 
 app.post('/urls/:id/delete', (req, res) => {
   const shortURL = req.params.id;
