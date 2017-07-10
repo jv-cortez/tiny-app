@@ -2,28 +2,36 @@
 <html lang="en">
 
 <head>
-    <title>TinyApp</title>
+    <title>Tiny App Home Page</title>
 </head>
 
 <body>
     <header>
         <% include partials/_header %>
     </header>
-    <h1>These are the urls!</h1>
-    <p> Hi there! Welcome to my TinyApp!</p>
-    <h2>Here are my links!</h2>
-    <ul>
-        <% for (let url in urls) { %>
-            <li>
-                <%= url %> - <%= urls[url] %>
-                        <a href="/urls/<%= url %>">EDIT</a>
-                        <form method="POST" action="/urls/<%= url %>/delete"><input type="submit" value="Delete"></form>
+    <center>
+        <h1>Hi there! Welcome to my TinyApp!</h1>
+        <% if (user_id) { %> 
+        <h2> These are the URLs!</h2>
+                        <ul>
+                    <% for (let url in urls) { %>
+                        <p>
+                            <%= url %> - <%= urls[url].longURL %>
+                                    <a href="/urls/<%= url %>">EDIT</a>
+                                    <form method="POST" action="/urls/<%= url %>/delete">
+                                    <input type="submit" value="Delete"></form>
+                        </p>
+                        <% } %>
+                            <p>Shrink URL here!</p>
+                            <form method="GET" action="/urls/new">
+                            <input type="submit" value="Enter"></form>
+                </ul>
+        <% } else { %> 
+        <p> Please <a href="/login">log in</a></p>
+        <% } %>
+        
 
-            </li>
-            <% } %>
-    </ul>
-    <p><a href="/urls/new">Create a new shortened URL</a></p>
-
+    </center>
 </body>
 
 </html>

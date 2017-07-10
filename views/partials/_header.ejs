@@ -4,26 +4,19 @@
         <div class="navbar-header">
             <a class="navbar-brand">
                 <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
-                Lighthouse Labs June 26 Cohort - Juan Victor Cortez
-                <% if (username !== undefined) { %>
-                <form action="/logout" method="POST" style="margin: 25px">
-                    <label class="logoutLblPos">
-                    <input name="logoutbutton" type="submit" id="submit2" value="log out">
-                </label>
-                </form>
-                <% } else { %>
-                <form action="/login" method="POST" style="margin:25px;">
-                    <label="username">Enter Username Here</label>
-                    <input id="username" type="text" name="username" placeholder="Type Username Here" style="width: 300px;">
-                    <input type="submit" value="Enter">
-                </form>
-                <% } %>  
+                By LHL June 26 '17 Cohort - JV Cortez
+                    <% if (user_id !== undefined) { %>
+                    <p><a href="/urls">Home</a></p>
+                    <p>Logged in as:  <%= user_id.email %></p>
+                        <form action="/logout" method="POST" style="float: left;">
+                            <label class="logoutLblPos">
+                            <input name="logoutbutton" type="submit" id="submit2" value="log out">
+                            </label>
+                        </form>                        
+                    <% } else { %>
+                <p><a href="/urls">Home</a> <a href="/login">Log In</a> <a href="/register">Register</a></p>
+                    <% } %>
             </a>
         </div>
-
-        <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-        </ul>
-
     </div>
 </nav>
