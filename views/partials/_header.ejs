@@ -5,8 +5,17 @@
             <a class="navbar-brand">
                 <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
                 By LHL June 26 '17 Cohort - JV Cortez
-                <p><a href="/urls">Home</a></p>
-
+                    <% if (user_id !== undefined) { %>
+                    <p><a href="/urls">Home</a></p>
+                    <p>Logged in as:  <%= user_id.email %></p>
+                        <form action="/logout" method="POST" style="float: left;">
+                            <label class="logoutLblPos">
+                            <input name="logoutbutton" type="submit" id="submit2" value="log out">
+                            </label>
+                        </form>                        
+                    <% } else { %>
+                <p><a href="/urls">Home</a> <a href="/login">Log In</a> <a href="/register">Register</a></p>
+                    <% } %>
             </a>
         </div>
     </div>

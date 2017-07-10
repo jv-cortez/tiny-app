@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>TinyApp Login Page</title>
+</head>
+
+<body>
+     <header>
+        Welcome to the Tiny App Login Page!
+        <% include partials/_header %>
+    </header>
+    <center><h1>Tiny App</h1>
+    <% if (user_id !== undefined) { %>
+        <form action="/logout" method="POST" style="margin: 25px">
+            <label class="logoutLblPos">
+            <input name="logoutbutton" type="submit" id="submit2" value="log out">
+            </label>
+        </form>
+        <% } else { %>
+            <form action="/login" method="POST" style="margin:25px;">
+                <label for="email">Enter a email:</label>
+                <input id="email" type="email" name="email" placeholder="Email here" style="width: 300px" required>
+                <label for="password">Enter a password:</label>
+                <input id="password" type="password" name="password" placeholder="Password here" style="width: 300px" requried>
+                <input type="submit" value="Enter">
+            </form>
+            <% } %>
+            <p>Don't have an account yet?</p>
+            <p><a href="/register">Register Here!</a></p>
+    </center>
+</body>
+
+</html>
